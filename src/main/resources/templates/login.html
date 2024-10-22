@@ -2,14 +2,52 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="padrao.css">
     <title>Login</title>
 </head>
 <body>
-    <div align="center">
-        <h1>GoodStudy</h1>
-        <h2>Login</h2>
+    <div style="background-color: #0a4da2;">
+        <h1 class="textPrincipal">GoodStudy</h1>
     </div>
-    <p th:text="${title}"/>
+    <div class="container" >
+        <div class="content">
+            <div>
+                <input type="text" placeholder="Email">
+            </div>
+            <div class="password-container">
+                <input id="passwordText" type="password" placeholder="Password">
+                <span class="password-toggle-icon" onclick="changePasswordVisibility()"><i id="eyeIcon" class="fas fa-eye"></i></span>
+            </div>
+            <div>
+                <a href="#" class="buttonRedondo">Login</a>
+            </div>
+            <div>
+                <a href="#" class="buttonRedondo">Login Anônimo</a>
+            </div>
+            <div>
+                <a href="#" class="buttonRedondo">Criar Conta</a>
+            </div>
+        </div>
+    </div>
+
 
 </body>
+<script>
+    function changePasswordVisibility() {
+        var passwordTextType = document.getElementById("passwordText");
+        var eyeIcon = document.getElementById("eyeIcon");
+        if (passwordTextType.type === "password") {
+            eyeIcon.classList.remove("fa-eye");
+            eyeIcon.classList.add("fa-eye-slash");
+            passwordTextType.type = "text";
+        } else {
+            passwordTextType.type = "password";
+            eyeIcon.classList.remove("fa-eye-slash");
+            eyeIcon.classList.add("fa-eye");
+        }
+    }
+</script>
 </html>
