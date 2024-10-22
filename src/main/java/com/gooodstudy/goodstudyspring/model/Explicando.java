@@ -1,22 +1,23 @@
 package com.gooodstudy.goodstudyspring.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Explicando {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    int id;
+    private int id;
 
-    String nome;
+    private String nome;
 
-    int idade;
+    private int idade;
 
-    String distrito;
+    private String distrito;
 
 
+    private String imageName;
+    private String imageType;
+    @Lob
+    private byte[] imageData;
 }

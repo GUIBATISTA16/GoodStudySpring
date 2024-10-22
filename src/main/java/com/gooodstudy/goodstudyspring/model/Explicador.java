@@ -9,16 +9,22 @@ public class Explicador {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    int id;
+    private int id;
 
-    String nome;
+    private String nome;
 
-    String descricao;
+    private String descricao;
 
     @OneToOne
-    Especialidade especialidade;
+    private Especialidade especialidade;
 
-    int precohora;
-    int precomes;
-    int precoano;
+    private int precohora;
+    private int precomes;
+    private int precoano;
+
+    private String imageName;
+    private String imageType;
+    @Lob
+    private byte[] imageData;
+
 }
