@@ -9,7 +9,11 @@ public class PageController {
 
     @GetMapping("")
     public String loginPage(Model model) {
-        model.addAttribute("title", "Welcome to the Good Study");
         return "login";
+    }
+
+    @GetMapping("/createaccount")
+    public String createAccountPage(Model model) {
+        return "createaccount";
     }
 }

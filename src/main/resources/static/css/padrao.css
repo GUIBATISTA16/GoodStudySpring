@@ -23,16 +23,14 @@
 .textPrincipal {
     color: white;
     font-family: Arial, sans-serif;
-    text-align: center;
 }
 
-.container {
+.containerRedondo {
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    margin: 50px auto;
+    width: 400px;
     border: 1px solid black;
 }
 
@@ -72,5 +70,26 @@ input[type="password"] {
 
 body {
     background-color: #dddddd;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
+
+.body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0a4da2;
+    color: white;
+    position: relative;
+}
+
+
 
