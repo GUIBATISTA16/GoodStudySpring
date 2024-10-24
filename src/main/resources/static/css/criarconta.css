@@ -1,0 +1,13 @@
+.containerLimitado{
+    align-items: center;
+    width: 30%;
+}
+
+.cainput{
+    padding: 6px;
+    display: flex;
+    flex-flow: column;
+}
+
+
+

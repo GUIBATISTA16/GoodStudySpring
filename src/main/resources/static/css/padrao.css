@@ -20,6 +20,27 @@
     color: white;
 }
 
+.buttonRetangular {
+    background-color: #0a4da2;
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.buttonRetangular:hover {
+    background-color: #083a82;
+    color: white;
+}
+
 .textPrincipal {
     color: white;
     font-family: Arial, sans-serif;
@@ -36,6 +57,16 @@
 
 input[type="text"] {
     width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+input[type="number"] {
+    width: 40%;
     padding: 10px;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -82,13 +113,27 @@ body {
     flex: 1;
 }
 
-.header{
+.header {
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #0a4da2;
     color: white;
     position: relative;
+}
+
+select {
+    width: 40%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+label {
+    margin-bottom: -5px;
 }
 
 

@@ -6,17 +6,59 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <link rel="stylesheet" href="../static/css/padrao.css">
+    <link rel="stylesheet" href="../static/css/criarconta.css">
     <link th:rel="stylesheet" th:href="@{/css/padrao.css}">
+    <link th:rel="stylesheet" th:href="@{/css/criarconta.css}">
 </head>
-<body>
-    <div class="header">
-        <h1 class="textPrincipal">Criar conta</h1>
-    </div>
-    <div class="body">
-        <div class="containerRedondo">
-
+<body ng-app="caapp" ng-controller="caCtrl">
+<div class="header">
+    <h1 class="textPrincipal">Criar conta</h1>
+</div>
+<div class="body">
+    <div class="containerLimitado">
+        <div class="cainput">
+            <label for="tipo">Tipo de Conta:</label>
+            <select name="tipo" ng-model="tipo" id="tipo">
+                <option value="Explicando">Explicando</option>
+                <option value="Explicador">Explicador</option>
+            </select>
+        </div>
+        <div class="cainput">
+            <label>Nome:</label>
+            <input type="text" id="nome" ng-model="nome" placeholder="Nome">
+        </div>
+        <div class="cainput">
+            <label>Email:</label>
+            <input type="text" id="email" ng-model="email" placeholder="Email">
+        </div>
+        <div class="cainput">
+            <label>Password:</label>
+            <input id="passwordText" type="password" ng-model="password" placeholder="Password">
+        </div>
+        <div class="cainput">
+            <label>Distrito:</label>
+            <input type="text" id="distrito" ng-model="distrito" placeholder="Distrito">
+        </div>
+        <div class="cainput" ng-if="tipo === 'Explicando'">
+            <label>Idade:</label>
+            <input type="number" id="idade" ng-model="idade" placeholder="Idade">
+        </div>
+        <div style="width: 40%; margin-left: 6px">
+            <a href="#" class="buttonRetangular">Criar Conta</a>
         </div>
     </div>
+</div>
+
 </body>
+
+<script>
+    var app = angular.module("caapp", []);
+
+    app.controller('caCtrl', function ($scope) {
+        $scope.tipo = 'Explicando';
+    });
+</script>
+
 </html>
