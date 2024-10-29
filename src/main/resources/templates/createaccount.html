@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Criar Conta</title>
+    <link rel="icon" type="image/x-icon" th:href="@{img/GoodStudy.png}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -18,36 +19,92 @@
 </div>
 <div class="body">
     <div class="containerLimitado">
-        <div class="cainput">
-            <label for="tipo">Tipo de Conta:</label>
-            <select name="tipo" ng-model="tipo" id="tipo">
-                <option value="Explicando">Explicando</option>
-                <option value="Explicador">Explicador</option>
-            </select>
-        </div>
-        <div class="cainput">
-            <label>Nome:</label>
-            <input type="text" id="nome" ng-model="nome" placeholder="Nome">
-        </div>
-        <div class="cainput">
-            <label>Email:</label>
-            <input type="text" id="email" ng-model="email" placeholder="Email">
-        </div>
-        <div class="cainput">
-            <label>Password:</label>
-            <input id="passwordText" type="password" ng-model="password" placeholder="Password">
-        </div>
-        <div class="cainput">
-            <label>Distrito:</label>
-            <input type="text" id="distrito" ng-model="distrito" placeholder="Distrito">
-        </div>
-        <div class="cainput" ng-if="tipo === 'Explicando'">
-            <label>Idade:</label>
-            <input type="number" id="idade" ng-model="idade" placeholder="Idade">
-        </div>
-        <div style="width: 40%; margin-left: 6px">
-            <a href="#" class="buttonRetangular">Criar Conta</a>
-        </div>
+        <form name="caccount" style="align-content: center" novalidate>
+            <div class="cainput">
+                <div class="perfil-foto">
+                    <img ng-src="{{profileImage}}" ng-if="profileImage" alt="Foto de perfil">
+                    <span ng-if="!profileImage" class="placeholder-icon">👤</span>
+                </div>
+            </div>
+            <div class="cainput">
+                <input type="file" id="fileInput" style="display: none" onchange="angular.element(this).scope().uploadPhoto(this)">
+                <button ng-click="choosePhoto()" class="buttonRedondo">Escolher Foto de Perfil</button>
+            </div>
+            <div class="cainput">
+                <label for="tipo">Tipo de Conta:</label>
+                <select name="tipo" ng-model="tipo" id="tipo" required>
+                    <option value="Explicando">Explicando</option>
+                    <option value="Explicador">Explicador</option>
+                </select>
+            </div>
+            <div class="cainput" >
+                <label>Nome:</label>
+                <input type="text" id="nome" ng-model="nome" placeholder="Nome" required>
+            </div>
+            <div class="cainput">
+                <label>Email:</label>
+                <input type="email" id="email" ng-model="email" placeholder="Email" required>
+            </div>
+            <div class="cainput">
+                <label>Password:</label>
+                <input id="passwordText" type="password" ng-model="password" placeholder="Password" required>
+            </div>
+            <div class="cainput" id="distritoField" ng-show="tipo === 'Explicando'">
+                <label>Distrito:</label>
+                <input type="text" id="distrito" ng-model="distrito" placeholder="Distrito" required>
+            </div>
+            <div class="cainput" id="idadeField" ng-show="tipo === 'Explicando'">
+                <label>Idade:</label>
+                <input type="number" id="idade" ng-model="idade" placeholder="Idade" required idade-valida>
+            </div>
+            <div class="cainput" id="descField" ng-show="tipo === 'Explicador'">
+                <label>Descrição:</label>
+                <input type="text" id="desc" ng-model="desc" placeholder="Descrição (opcional)">
+            </div>
+            <div class="cainput" id="espField" ng-show="tipo === 'Explicador'">
+                <label for="esp">Especialidade</label>
+                <select name="esp" ng-model="esp" id="esp" required>
+                    <option ng-repeat="esp in especialidades" ng-value="esp">
+                        {{esp.nome}}
+                    </option>
+                </select>
+            </div>
+            <div class="cainput" id="tabelaPreco" ng-show="tipo === 'Explicador'">
+                <table>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Preço</th>
+                    </tr>
+                    <tr>
+                        <td>Preço por hora</td>
+                        <td>
+                            <div class="input-wrapper">
+                                <input type="text" ng-model="precohora" placeholder="Insira o preço por hora, Ex: 20.00" required>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Preço por mês</td>
+                        <td>
+                            <div class="input-wrapper">
+                                <input type="text" ng-model="precomes" placeholder="Insira o preço por mês, Ex: 20.00">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Preço por ano</td>
+                        <td>
+                            <div class="input-wrapper">
+                                <input type="text" ng-model="precoano" placeholder="Insira o preço por ano, Ex: 20.00">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="width: 40%; margin-left: 6px">
+                <button ng-click="submitForm()" class="buttonRetangular">Criar Conta</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -56,8 +113,107 @@
 <script>
     var app = angular.module("caapp", []);
 
-    app.controller('caCtrl', function ($scope) {
+    app.controller('caCtrl', function ($scope, $http) {
         $scope.tipo = 'Explicando';
+        $scope.especialidades = [];
+        $scope.getEsps = function () {
+            $http.get("http://localhost:8080/api/especialidades")
+                .then(function (response) {
+                    $scope.especialidades = response.data;
+                }, function (error) {
+                    console.error("Erro ao buscar especialidades:", error);
+                });
+        }
+        $scope.getEsps();
+
+        $scope.profileImage = '';
+        $scope.selectedFile = null;
+
+        $scope.choosePhoto = function() {
+            document.getElementById('fileInput').click();
+        };
+
+        $scope.uploadPhoto = function(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $scope.$apply(function() {
+                        $scope.profileImage = e.target.result;
+                    });
+                };
+                reader.readAsDataURL(input.files[0]);
+                $scope.selectedFile = input.files[0];
+            }
+        };
+
+        $scope.submitForm = function () {
+            if ($scope.tipo === 'Explicando') {
+                if (!$scope.nome || !$scope.email || !$scope.password || !$scope.distrito || !$scope.idade) {
+                    alert("Por favor, preencha todos os campos obrigatórios para Explicando.");
+                    return;
+                }
+            }
+            else if ($scope.tipo === 'Explicador') {
+                if (!$scope.nome || !$scope.email || !$scope.password || !$scope.esp || !$scope.precohora) {
+                    alert("Por favor, preencha todos os campos obrigatórios para Explicador.");
+                    return;
+                }
+            }
+            let data = new FormData();
+
+            let formData = {
+                nome: $scope.nome,
+                email: $scope.email,
+                password: $scope.password
+            };
+
+            if ($scope.tipo === 'Explicando') {
+                formData.distrito = $scope.distrito;
+                formData.idade = $scope.idade;
+            } else {
+                formData.descricao = $scope.desc;
+                formData.especialidade = $scope.esp;
+                formData.precohora = $scope.precohora;
+                formData.precomes = $scope.precomes;
+                formData.precoano = $scope.precoano;
+            }
+
+            data.append('conta', new Blob([JSON.stringify(formData)], { type: "application/json" }));
+            console.log(data);
+            if ($scope.selectedFile) {
+                data.append('file', $scope.selectedFile);
+            }
+
+            const url = $scope.tipo === 'Explicando'
+                ? "http://localhost:8080/api/explicando/save"
+                : "http://localhost:8080/api/explicador/save";
+
+            $http.post(url, data, {
+                headers: { 'Content-Type': undefined }
+            }).then(function (response) {
+                alert("Conta criada com sucesso!");
+                window.location.href = '/';
+            }, function (error) {
+                alert("Erro ao criar conta: " + error.statusText);
+            });
+        };
+    });
+
+    app.directive('idadeValida', function() {
+        return {
+            require: 'ngModel',
+            link: function(scope, element, attr, mCtrl) {
+                function idadeValidacao(value) {
+                    if (value > 0 && value < 100) {
+                        mCtrl.$setValidity('idadeValida', true); // Válido
+                    } else {
+                        mCtrl.$setValidity('idadeValida', false); // Inválido
+                    }
+                    return value;
+                }
+                mCtrl.$parsers.push(idadeValidacao);
+            }
+        };
     });
 </script>
 

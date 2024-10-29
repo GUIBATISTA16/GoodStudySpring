@@ -1,9 +1,14 @@
 package com.gooodstudy.goodstudyspring.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Set;
-
+@Getter
+@Setter
+@ToString
 @Entity
 public class Explicador {
 
@@ -15,8 +20,12 @@ public class Explicador {
 
     private String descricao;
 
-    @OneToOne
+    @ManyToOne
     private Especialidade especialidade;
+
+    private String email;
+
+    private String password;
 
     private int precohora;
     private int precomes;
