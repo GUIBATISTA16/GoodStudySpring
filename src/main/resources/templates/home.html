@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/x-icon" th:href="@{img/GoodStudy.png}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <link rel="stylesheet" href="../static/css/padrao.css">
+  <link th:rel="stylesheet" th:href="@{/css/padrao.css}">
+  <title>Home</title>
+</head>
+<body ng-app="homeApp" ng-controller="homeCtrl">
+  <div class="header home" >
+    <div class="headerDivisor">
+      <div class="left">
+        <h1 class="textPrincipal">Seja Bem-Vindo</h1>
+        <h2>{{user.nome}}</h2>
+      </div>
+      <div class="right">
+        <img ng-src="data:{{user.imageType}};base64,{{user.imageData}}" ng-show="profileImagePresent" alt="Foto de perfil" class="profile-picture"/>
+        <button ng-click="logout()" class="logoutButton"><i class="fas fa-sign-out-alt icone"></i></button>
+      </div>
+    </div>
+  </div>
+  <div ng-show="tipo==='Explicador'">
+    <h1>Explicador</h1>
+  </div>
+  <div ng-show="tipo==='Explicando'">
+    <h1>Explicando</h1>
+  </div>
+</body>
+
+<script>
+  var app = angular.module('homeApp',[]);
+  app.controller('homeCtrl',function ($scope,$http) {
+    var authToken = localStorage.getItem('authToken');
+    /*if (authToken === null) {
+      window.location.href = '/login';
+    }*/
+    $scope.user = JSON.parse(localStorage.getItem('utilizador'));
+    $scope.user.tipodeconta === 1 ? $scope.tipo = 'Explicador' : $scope.tipo = 'Explicando';
+
+    $scope.profileImagePresent = true;
+    if ($scope.user.imageData === null){
+      $scope.profileImagePresent = false;
+    }
+    $http.defaults.headers.common['Authorization'] = 'Bearer ' + authToken;
+
+    $scope.logout = function () {
+      $http.post('/logoutu')
+          .then(function (response) {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('utilizador');
+            window.location.href = '/';
+          })
+          .catch(function (error) {
+            console.error('Error:', error);
+          });
+    };
+  })
+
+</script>
+
+</html>

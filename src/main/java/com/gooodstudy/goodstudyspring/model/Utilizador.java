@@ -5,12 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Set;
+@Entity
 @Getter
 @Setter
 @ToString
-@Entity
-public class Explicador {
+public class Utilizador {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -18,22 +17,34 @@ public class Explicador {
 
     private String nome;
 
-    private String descricao;
-
-    @ManyToOne
-    private Especialidade especialidade;
-
     private String email;
 
     private String password;
 
-    private int precohora;
-    private int precomes;
-    private int precoano;
+    //1- Explicador
+    //2- Explicando
+    private int tipodeconta;
 
     private String imageName;
     private String imageType;
     @Lob
     private byte[] imageData;
 
+    //Explicando
+    private int idade;
+
+    private String distrito;
+    //Explicando
+
+    //Explicador
+    private String descricao;
+
+    @ManyToOne
+    private Especialidade especialidade;
+
+
+    private int precohora;
+    private int precomes;
+    private int precoano;
+    //Explicador
 }

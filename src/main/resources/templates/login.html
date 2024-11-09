@@ -16,24 +16,24 @@
     <div class="header">
         <h1 class="textPrincipal">GoodStudy</h1>
     </div>
-    <div class="body">
+    <div class="body" ng-app="loginApp" ng-controller="loginCtrl">
         <div class="containerRedondo" >
             <div class="content">
                 <div>
-                    <input type="text" placeholder="Email">
+                    <input type="email" ng-model="email" placeholder="Email">
                 </div>
                 <div class="password-container">
-                    <input id="passwordText" type="password" placeholder="Password">
+                    <input id="passwordText" ng-model="password" type="password" placeholder="Password">
                     <span class="password-toggle-icon" onclick="changePasswordVisibility()"><i id="eyeIcon" class="fas fa-eye"></i></span>
                 </div>
                 <div>
-                    <a href="#" class="buttonRedondo">Login</a>
+                    <button ng-click="login()" class="buttonRedondo">Login</button>
                 </div>
                 <div>
-                    <a href="#" class="buttonRedondo">Login Anônimo</a>
+                    <button class="buttonRedondo">Login Anônimo</button>
                 </div>
                 <div>
-                    <a href="/createaccount" class="buttonRedondo">Criar Conta</a>
+                    <button ng-click="criarConta()" class="buttonRedondo">Criar Conta</button>
                 </div>
             </div>
         </div>
@@ -54,5 +54,40 @@
             eyeIcon.classList.add("fa-eye");
         }
     }
+
+    var app = angular.module("loginApp", []);
+
+    app.controller('loginCtrl', function ($scope, $http) {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('utilizador');
+        $scope.login = function (){
+            if(!$scope.email || !$scope.password){
+                alert("Por favor, preencha todos os campos");
+                return;
+            }
+            let authenticationRequest = {
+                "email": $scope.email,
+                "password": $scope.password
+            };
+            $http.post('/login',authenticationRequest)
+                .then(function (response) {
+                    var authToken = response.data.token;
+                    var utilizador = response.data.utilizador;
+                    localStorage.setItem('authToken', authToken);
+                    localStorage.setItem('utilizador', JSON.stringify(utilizador));
+                    console.log(authToken);
+                    alert(authToken);
+                    window.location.href = '/home'
+                })
+                .catch(function (error){
+                    alert("Credenciais inválidas");
+                    console.error('Error:', error);
+                });
+        };
+
+        $scope.criarConta = function () {
+            window.location.href='/createaccount'
+        }
+    });
 </script>
 </html>

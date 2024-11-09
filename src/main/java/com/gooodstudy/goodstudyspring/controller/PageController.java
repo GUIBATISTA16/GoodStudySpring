@@ -16,4 +16,9 @@ public class PageController {
     public String createAccountPage(Model model) {
         return "createaccount";
     }
+
+    @GetMapping("/home")
+    public String homePage(Model model) {
+        return "home";
+    }
 }

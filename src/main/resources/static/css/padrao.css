@@ -115,11 +115,45 @@ body {
 
 .header {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: #0a4da2;
     color: white;
     position: relative;
+    width: 100%;
+}
+
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.home h1 {
+    font-size: 27px;
+}
+
+.home h2 {
+    font-size: 20px;
+}
+
+.headerDivisor {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+}
+
+.right {
+
 }
 
 select {
@@ -177,3 +211,19 @@ td input {
     object-fit: cover;
 }
 
+.profile-picture {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
+.logoutButton {
+    margin-top: 20px;
+    width: 60px;
+    height: 30px;
+    background-color: #FF4D4D;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    color: #000;
+}
