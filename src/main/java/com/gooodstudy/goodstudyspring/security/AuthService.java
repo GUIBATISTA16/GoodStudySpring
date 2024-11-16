@@ -32,8 +32,6 @@ public class AuthService {
     public JwtResponse authenticate(JwtRequest authenticationRequest, HttpServletRequest httpServletRequest) throws Exception {
 
         authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
-        System.out.println("Email:" + authenticationRequest.getEmail());
-        System.out.println("Password:" + authenticationRequest.getPassword());
 
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getEmail());

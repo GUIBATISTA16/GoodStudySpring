@@ -26,7 +26,6 @@ public class AuthController {
 
     @PostMapping("/logoutu")
     public ResponseEntity<?> logout(HttpServletRequest httpServletRequest) {
-        System.out.println("fez logout");
         authService.logout(httpServletRequest);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

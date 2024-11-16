@@ -60,6 +60,8 @@
     app.controller('loginCtrl', function ($scope, $http) {
         localStorage.removeItem('authToken');
         localStorage.removeItem('utilizador');
+        $scope.email= "massas@email.com";//testes retirar
+        $scope.password= "m123";//testes retirar
         $scope.login = function (){
             if(!$scope.email || !$scope.password){
                 alert("Por favor, preencha todos os campos");
@@ -76,7 +78,6 @@
                     localStorage.setItem('authToken', authToken);
                     localStorage.setItem('utilizador', JSON.stringify(utilizador));
                     console.log(authToken);
-                    alert(authToken);
                     window.location.href = '/home'
                 })
                 .catch(function (error){

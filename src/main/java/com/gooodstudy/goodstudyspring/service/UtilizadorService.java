@@ -1,5 +1,6 @@
 package com.gooodstudy.goodstudyspring.service;
 
+import com.gooodstudy.goodstudyspring.model.Especialidade;
 import com.gooodstudy.goodstudyspring.model.Utilizador;
 import com.gooodstudy.goodstudyspring.repository.UtilizadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,22 @@ public class UtilizadorService {
 
     public List<Utilizador> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public List<Utilizador> pesquisa(String nome, Optional<Especialidade> especialidade,
+                                     int precoMin, int precoMax) {
+        List<Utilizador> users;
+        String nomePesquisa = "";
+        if (nome != null){
+            nomePesquisa = nome;
+        }
+        System.out.println("nome: " + nome);
+        if (especialidade.isPresent()) {
+            users = userRepository.pesquisarExplicadorEsp(nomePesquisa,precoMin,precoMax,especialidade.get());
+        }
+        else {
+            users = userRepository.pesquisarExplicadorBasic(nomePesquisa,precoMin,precoMax);
+        }
+        return users;
     }
 }

@@ -22,8 +22,8 @@
         <form name="caccount" style="align-content: center" novalidate>
             <div class="cainput">
                 <div class="perfil-foto">
-                    <img ng-src="{{profileImage}}" ng-if="profileImage" alt="Foto de perfil">
-                    <span ng-if="!profileImage" class="placeholder-icon">👤</span>
+                    <img ng-src="{{profileImage}}" ng-show="profileImage" alt="Foto de perfil">
+                    <img th:src="@{/img/default-avatar.png}" ng-hide="profileImage" alt="Foto de perfil">
                 </div>
             </div>
             <div class="cainput">

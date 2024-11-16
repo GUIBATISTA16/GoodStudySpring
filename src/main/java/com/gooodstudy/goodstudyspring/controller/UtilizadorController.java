@@ -1,15 +1,14 @@
 package com.gooodstudy.goodstudyspring.controller;
 
+import com.gooodstudy.goodstudyspring.model.Especialidade;
 import com.gooodstudy.goodstudyspring.model.Utilizador;
+import com.gooodstudy.goodstudyspring.requests.PesquisaRequest;
 import com.gooodstudy.goodstudyspring.service.UtilizadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -38,5 +37,16 @@ public class UtilizadorController {
     public ResponseEntity<List<Utilizador>> getExplicadores() {
         List<Utilizador> list = utilizadorService.getAllUsers();
         return new ResponseEntity<>(list, HttpStatus.OK) ;
+    }
+
+    @PostMapping("/pesquisa")
+    public ResponseEntity<List<Utilizador>> getPesquisa(@RequestBody PesquisaRequest request) {
+        List<Utilizador> list = utilizadorService.pesquisa(
+                request.getNome(),
+                Optional.ofNullable(request.getEspecialidade()),
+                request.getPrecoMin(),
+                request.getPrecoMax()
+        );
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
