@@ -46,7 +46,7 @@ public class PedidoController {
             return new ResponseEntity<>(pedidoAnswered, HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 

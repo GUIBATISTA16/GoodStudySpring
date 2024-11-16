@@ -28,7 +28,7 @@ public class PedidoService {
     }
 
     public Pedido answerToPedido(AnswerToPedidoRequest answer) {
-        if (!answer.getAnswer().equals("Accepted")  || !answer.getAnswer().equals("Rejected"))
+        if (!answer.getAnswer().equals("Accepted")  && !answer.getAnswer().equals("Rejected"))
             return null;
 
         Pedido pedido = answer.getPedido();

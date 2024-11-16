@@ -28,8 +28,26 @@
     </div>
   </div>
   <div class="bodyHome">
-    <div ng-show="tipo==='Explicador'">
-
+    <div ng-show="tipo==='Explicador'" style="display: flex; flex-direction: row">
+      <div class="body30">
+        <h2>Pedidos recebidos</h2>
+      </div>
+      <div class="body70">
+        <div ng-repeat="pedido in pedidosRecebidos" class="pedido-container">
+          <div class="perfil">
+            <img ng-src="data:{{pedido.explicando.imageType}};base64,{{pedido.explicando.imageData}}" ng-show="pedido.explicando.imageData" class="perfil-img"/>
+            <img th:src="@{/img/default-avatar.png}" ng-hide="pedido.explicando.imageData" class="perfil-img">
+            <div class="info">
+              <h2>{{pedido.explicando.nome}}</h2>
+            </div>
+          </div>
+          <p class="texto-pedido">{{pedido.texto}}</p>
+          <div class="botoes">
+            <button class="btn aceitar" ng-click="responderPedido(pedido,'Accepted')">Aceitar</button>
+            <button class="btn recusar" ng-click="responderPedido(pedido,'Rejected')">Recusar</button>
+          </div>
+        </div>
+      </div>
     </div>
     <div ng-show="tipo==='Explicando'" style="display: flex; flex-direction: row">
       <div class="body30">
@@ -179,7 +197,7 @@
                 console.error('Error:', error);
               });
     };
-    $scope.pesquisa();
+    $scope.tipo === 'Explicando' ? $scope.pesquisa() : null;
 
     $scope.showModal = false;
     $scope.selectedExplicador = {};
@@ -211,9 +229,9 @@
 
       $http.post('/api/sendPedido', pedido)
               .then(function (response) {
-                console.log(response.data);
+                //console.log(response.data);
                 $scope.pedidosEnviados.push(pedido);
-                console.log($scope.pedidosEnviados)
+                //console.log($scope.pedidosEnviados)
                 $scope.texto="";
                 $scope.closeModal(texto);
               })
@@ -239,7 +257,39 @@
         return pedido.explicador && pedido.explicador.id === explicadorId;
       });
     };
-  })
+
+    $scope.pedidosRecebidos = [];
+    $scope.getPedidosRecebidos = function () {
+      $http.get('/api/getPedidos/explicador/' + $scope.user.id)
+              .then(function (response){
+                $scope.pedidosRecebidos = response.data;
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+    };
+    $scope.tipo === 'Explicador' ? $scope.getPedidosRecebidos() : null;
+
+    $scope.responderPedido = function (pedido,resposta) {
+      let answer = {
+        "pedido": pedido,
+        "answer": resposta
+      };
+
+      $http.put('/api/answerPedido',answer)
+              .then(function (response){
+                //console.log(response.data);
+                const index = $scope.pedidosRecebidos.indexOf(pedido);
+                if (index > -1) {
+                  $scope.pedidosRecebidos.splice(index, 1);
+                }
+                //console.log($scope.pedidosRecebidos);
+              })
+              .catch(function (error){
+                console.log(error);
+              });
+    };
+  });
 
 </script>
 
