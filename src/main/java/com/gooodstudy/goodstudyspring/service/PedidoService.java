@@ -16,6 +16,7 @@ public class PedidoService {
 
     public Pedido sendPedido(Pedido pedido) {
         //pedido.setData(new Date());
+        pedido.setEstado("Waiting");
         return pedidoRepository.save(pedido);
     }
 

@@ -117,7 +117,7 @@
         $scope.tipo = 'Explicando';
         $scope.especialidades = [];
         $scope.getEsps = function () {
-            $http.get("http://localhost:8080/api/especialidades")
+            $http.get("/api/especialidades")
                 .then(function (response) {
                     $scope.especialidades = response.data;
                 }, function (error) {
@@ -162,33 +162,43 @@
             let data = new FormData();
 
             let formData = {
-                nome: $scope.nome,
                 email: $scope.email,
                 password: $scope.password
             };
-
+            let pessoa;
             if ($scope.tipo === 'Explicando') {
                 formData.tipodeconta = 2;
-                formData.distrito = $scope.distrito;
-                formData.idade = $scope.idade;
+                pessoa = {
+                    nome: $scope.nome,
+                    "@type": "explicando",
+                }
+                pessoa.distrito = $scope.distrito;
+                pessoa.idade = $scope.idade;
             } else {
                 formData.tipodeconta = 1;
-                formData.descricao = $scope.desc;
-                formData.especialidade = $scope.esp;
-                formData.precohora = $scope.precohora;
-                formData.precomes = $scope.precomes;
-                formData.precoano = $scope.precoano;
+                pessoa = {
+                    nome: $scope.nome,
+                    "@type": "explicador",
+                }
+                pessoa.descricao = $scope.desc;
+                pessoa.especialidade = $scope.esp;
+                pessoa.precohora = $scope.precohora;
+                pessoa.precomes = $scope.precomes;
+                pessoa.precoano = $scope.precoano;
             }
             console.log(formData);
+            console.log(pessoa);
 
             data.append('conta', new Blob([JSON.stringify(formData)], { type: "application/json" }));
+            data.append('pessoa', new Blob([JSON.stringify(pessoa)], { type: "application/json" }));
 
             console.log(data);
             if ($scope.selectedFile) {
                 data.append('file', $scope.selectedFile);
             }
 
-            const url = "http://localhost:8080/api/user/save";
+            //const url = "/api/user/save";
+            const url = "/api/criarconta";
 
             $http.post(url, data, {
                 headers: { 'Content-Type': undefined }

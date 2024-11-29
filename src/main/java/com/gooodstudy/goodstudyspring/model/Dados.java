@@ -5,28 +5,24 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
-import java.util.Set;
-
 @Entity
 @Getter
 @Setter
 @ToString
-public class Pedido {
+public class Dados {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    private Explicador explicador;
+    private String email;
+
+    private String password;
+
+    //1- Explicador
+    //2- Explicando
+    private int tipodeconta;
 
     @ManyToOne
-    private Explicando explicando;
-
-    private String estado;
-
-    private Date data = new Date();
-
-    private String texto;
+    private Pessoa pessoa;
 }

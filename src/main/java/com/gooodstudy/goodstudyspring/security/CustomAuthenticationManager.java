@@ -1,8 +1,8 @@
 package com.gooodstudy.goodstudyspring.security;
 
 
-import com.gooodstudy.goodstudyspring.model.Utilizador;
-import com.gooodstudy.goodstudyspring.repository.UtilizadorRepository;
+import com.gooodstudy.goodstudyspring.model.Dados;
+import com.gooodstudy.goodstudyspring.repository.DadosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,14 +19,14 @@ import java.util.List;
 public class CustomAuthenticationManager implements AuthenticationManager {
 
     @Autowired
-    UtilizadorRepository utilizadorRepo;
+    DadosRepository dadosRepository;
 
 
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        Utilizador utilizador = utilizadorRepo.findByEmail(authentication.getName());
+        Dados utilizador = dadosRepository.findByEmail(authentication.getName());
         if (utilizador != null) {
             if (bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), utilizador.getPassword())) {
                 List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();

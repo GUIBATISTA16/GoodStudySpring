@@ -1,7 +1,7 @@
 package com.gooodstudy.goodstudyspring.security;
 
-import com.gooodstudy.goodstudyspring.model.Utilizador;
-import com.gooodstudy.goodstudyspring.repository.UtilizadorRepository;
+import com.gooodstudy.goodstudyspring.model.Dados;
+import com.gooodstudy.goodstudyspring.repository.DadosRepository;
 import com.gooodstudy.goodstudyspring.security.model.JwtRequest;
 import com.gooodstudy.goodstudyspring.security.model.JwtResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +12,6 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class AuthService {
@@ -21,7 +20,7 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    UtilizadorRepository utilizadorRepository;
+    DadosRepository dadosRepository;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -39,7 +38,7 @@ public class AuthService {
         final String token = jwtTokenUtil.generateToken(userDetails);
         System.out.println(token);
 
-        Utilizador utilizador = utilizadorRepository.findByEmail(authenticationRequest.getEmail());
+        Dados utilizador = dadosRepository.findByEmail(authenticationRequest.getEmail());
         utilizador.setPassword(null);
 
         return new JwtResponse(token,utilizador);

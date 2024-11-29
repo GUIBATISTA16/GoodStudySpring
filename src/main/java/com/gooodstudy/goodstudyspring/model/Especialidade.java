@@ -17,4 +17,10 @@ public class Especialidade {
 
     String nome;
 
+    public Especialidade(){}
+
+    public Especialidade(int id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
 }

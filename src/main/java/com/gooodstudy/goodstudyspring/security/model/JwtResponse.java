@@ -1,6 +1,6 @@
     package com.gooodstudy.goodstudyspring.security.model;
 
-    import com.gooodstudy.goodstudyspring.model.Utilizador;
+    import com.gooodstudy.goodstudyspring.model.Dados;
     import lombok.Getter;
     import lombok.Setter;
     import lombok.ToString;
@@ -14,9 +14,9 @@
 
         private final String token;
 
-        private final Utilizador utilizador;
+        private final Dados utilizador;
 
-        public JwtResponse(String jwttoken, Utilizador utilizador) {
+        public JwtResponse(String jwttoken, Dados utilizador) {
             this.token = jwttoken;
             this.utilizador = utilizador;
         }

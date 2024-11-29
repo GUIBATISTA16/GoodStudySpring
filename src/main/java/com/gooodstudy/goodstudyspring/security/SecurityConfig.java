@@ -36,6 +36,8 @@ public class SecurityConfig {
                                 "/login",
                                 "/createaccount",
                                 "/home",
+                                "/api/criarconta",
+                                "/api/explicadores",
                                 "/api/user/save",
                                 "/api/especialidades",
                                 "/css/**",

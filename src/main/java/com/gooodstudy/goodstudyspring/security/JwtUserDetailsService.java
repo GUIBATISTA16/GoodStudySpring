@@ -1,10 +1,9 @@
 package com.gooodstudy.goodstudyspring.security;
 
-import com.gooodstudy.goodstudyspring.model.Utilizador;
-import com.gooodstudy.goodstudyspring.repository.UtilizadorRepository;
+import com.gooodstudy.goodstudyspring.model.Dados;
+import com.gooodstudy.goodstudyspring.repository.DadosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -21,13 +19,13 @@ import java.util.List;
 public class JwtUserDetailsService implements UserDetailsService {
 
     @Autowired
-    UtilizadorRepository utilizadorRepository;
+    DadosRepository dadosRepository;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Utilizador person = utilizadorRepository.findByEmail(email);
+        Dados person = dadosRepository.findByEmail(email);
 
         if(person == null)
                 throw new UsernameNotFoundException("User not found with email: " + email);

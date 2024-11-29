@@ -18,10 +18,10 @@
     <div class="headerDivisor">
       <div class="left">
         <h1 class="textPrincipal">Seja Bem-Vindo</h1>
-        <h2>{{user.nome}}</h2>
+        <h2>{{user.pessoa.nome}}</h2>
       </div>
       <div class="right">
-        <img ng-src="data:{{user.imageType}};base64,{{user.imageData}}" ng-show="profileImagePresent" alt="Foto de perfil" class="profile-picture"/>
+        <img ng-src="data:{{user.pessoa.imageType}};base64,{{user.pessoa.imageData}}" ng-show="profileImagePresent" alt="Foto de perfil" class="profile-picture"/>
         <img th:src="@{/img/default-avatar.png}" ng-hide="profileImagePresent" alt="Foto do explicador" class="profile-picture">
         <button ng-click="logout()" class="logoutButton"><i class="fas fa-sign-out-alt icone"></i></button>
       </div>
@@ -126,7 +126,7 @@
 
 <script>
   var app = angular.module('homeApp',[]);
-  app.controller('homeCtrl',function ($scope,$http) {
+  app.controller('homeCtrl',function ($scope,$http,$interval) {
     var authToken = localStorage.getItem('authToken');
     /*if (authToken === null) {
       window.location.href = '/login';
@@ -146,7 +146,7 @@
     $scope.getEsps();
 
     $scope.profileImagePresent = true;
-    if ($scope.user.imageData === null){
+    if ($scope.user.pessoa.imageData === null || !$scope.user.pessoa.imageData){
       $scope.profileImagePresent = false;
     }
     $http.defaults.headers.common['Authorization'] = 'Bearer ' + authToken;
@@ -188,7 +188,7 @@
         request.especialidade = $scope.esp;
       }
       //console.log(request);
-      $http.post('/api/pesquisa',request)
+      $http.post('/api/explicadores/pesquisa',request)
               .then(function (response){
                 $scope.explicadores = response.data;
                 //console.log($scope.explicadores);
@@ -222,8 +222,7 @@
 
       let pedido = {
         "explicador": $scope.selectedExplicador,
-        "explicando": $scope.user,
-        "estado": "Waiting",
+        "explicando": $scope.user.pessoa,
         "texto": $scope.texto
       };
 
@@ -268,7 +267,10 @@
                 console.log(error);
               });
     };
-    $scope.tipo === 'Explicador' ? $scope.getPedidosRecebidos() : null;
+    if($scope.tipo === 'Explicador'){
+      //$scope.getPedidosRecebidos();
+      $interval($scope.getPedidosRecebidos,10000);
+    }
 
     $scope.responderPedido = function (pedido,resposta) {
       let answer = {
