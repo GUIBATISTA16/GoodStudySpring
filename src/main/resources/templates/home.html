@@ -33,7 +33,7 @@
         <h2>Pedidos recebidos</h2>
       </div>
       <div class="body70">
-        <div ng-repeat="pedido in pedidosRecebidos" class="pedido-container">
+        <div ng-repeat="pedido in pedidosRecebidos" class="pedido-container" ng-click="perfil(pedido.explicando.id)">
           <div class="perfil">
             <img ng-src="data:{{pedido.explicando.imageType}};base64,{{pedido.explicando.imageData}}" ng-show="pedido.explicando.imageData" class="perfil-img"/>
             <img th:src="@{/img/default-avatar.png}" ng-hide="pedido.explicando.imageData" class="perfil-img">
@@ -43,8 +43,8 @@
           </div>
           <p class="texto-pedido">{{pedido.texto}}</p>
           <div class="botoes">
-            <button class="btn aceitar" ng-click="responderPedido(pedido,'Accepted')">Aceitar</button>
-            <button class="btn recusar" ng-click="responderPedido(pedido,'Rejected')">Recusar</button>
+            <button class="btn aceitar" ng-click="responderPedido(pedido,'Accepted'); $event.stopPropagation()">Aceitar</button>
+            <button class="btn recusar" ng-click="responderPedido(pedido,'Rejected'); $event.stopPropagation()">Recusar</button>
           </div>
         </div>
       </div>
@@ -82,7 +82,7 @@
         </div>
       </div>
       <div class="body70">
-        <div class="explicador-card" ng-repeat="explicador in explicadores">
+        <div class="explicador-card" ng-repeat="explicador in explicadores" ng-click="perfil(explicador.id)">
           <img ng-src="data:{{explicador.imageType}};base64,{{explicador.imageData}}" ng-show="explicador.imageData" alt="Foto do explicador" class="explicador-image">
           <img th:src="@{/img/default-avatar.png}" ng-hide="explicador.imageData" alt="Foto do explicador" class="explicador-image">
           <div class="explicador-info">
@@ -92,9 +92,9 @@
             </div>
             <span class="explicador-specialty">{{ explicador.especialidade.nome }}</span>
           </div>
-          <button class="buttonRedondo" style="width: 300px" ng-click="openModal(explicador)"
+          <button class="buttonRedondo" style="width: 300px" ng-click="openModal(explicador); $event.stopPropagation()"
                   ng-hide="isPedidoEnviado(explicador.id)">Enviar Pedido</button>
-          <button class="buttonRedondo" style="width: 300px; color: #083a82"
+          <button class="buttonRedondo" style="width: 300px; color: #083a82" ng-click="$event.stopPropagation()"
                   ng-show="isPedidoEnviado(explicador.id)">Enviar Pedido</button>
           <div class="modal-backdrop" ng-show="showModal"><!-- Popup-->
             <div class="modal-content">
@@ -105,8 +105,8 @@
                   <h5 style="text-align: left">{{selectedExplicador.nome}}</h5>
                 </div>
                 <div class="right" style="margin-right: 10px">
-                  <img ng-src="data:{{selectedExplicador.imageType}};base64,{{selectedExplicador.imageData}}" ng-show="selectedExplicador.imageData" alt="Foto do explicador" class="modal-image">
-                  <img th:src="@{/img/default-avatar.png}" ng-hide="selectedExplicador.imageData" alt="Foto do explicador" class="modal-image">
+                  <img ng-src="data:{{selectedExplicador.imageType}};base64,{{selectedExplicador.imageData}}" ng-show="selectedExplicador.imageData" alt="Foto do explicador" class="modal-image" ng-click="perfil(selectedExplicador.id)">
+                  <img th:src="@{/img/default-avatar.png}" ng-hide="selectedExplicador.imageData" alt="Foto do explicador" class="modal-image" ng-click="perfil(selectedExplicador.id)">
                 </div>
               </div>
               <div class="form-group">
@@ -268,7 +268,7 @@
               });
     };
     if($scope.tipo === 'Explicador'){
-      //$scope.getPedidosRecebidos();
+      $scope.getPedidosRecebidos();
       $interval($scope.getPedidosRecebidos,10000);
     }
 
@@ -290,6 +290,10 @@
               .catch(function (error){
                 console.log(error);
               });
+    };
+
+    $scope.perfil = function (id) {
+      window.location.href = "/perfil/" + id;
     };
   });
 

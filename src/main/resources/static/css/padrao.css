@@ -217,6 +217,17 @@ td input {
     border-radius: 50%;
 }
 
+.profile-picture:hover {
+    cursor: pointer;
+}
+
+.profile-picture-big {
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    margin: 40px;
+}
+
 .logoutButton {
     margin-top: 20px;
     width: 60px;

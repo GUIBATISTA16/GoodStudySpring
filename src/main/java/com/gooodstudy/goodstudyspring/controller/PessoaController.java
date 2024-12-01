@@ -20,7 +20,7 @@ public class PessoaController {
     @GetMapping("/{id}")
     public ResponseEntity<Pessoa> getPessoa (@PathVariable("id") int id) {
 
-        Pessoa pessoa = pessoaService.getPessoa(id);
+        Pessoa pessoa = pessoaService.getPessoaById(id);
         if (pessoa == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

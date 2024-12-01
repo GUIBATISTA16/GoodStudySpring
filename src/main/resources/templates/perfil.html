@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/x-icon" th:href="@{img/GoodStudy.png}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <link rel="stylesheet" href="../static/css/padrao.css">
+  <link th:rel="stylesheet" th:href="@{/css/padrao.css}">
+  <title>Perfil</title>
+</head>
+<body ng-app="perfilApp" ng-controller="perfilCtrl">
+  <div class="header">
+    <h1 class="textPrincipal" >{{perfil.nome}}</h1>
+  </div>
+  <div style="display: flex; flex-direction: row">
+    <div class="body30">
+      <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
+        <img ng-src="data:{{perfil.imageType}};base64,{{perfil.imageData}}" ng-show="perfil.imageData" alt="Foto de perfil" class="profile-picture-big"/>
+        <img th:src="@{/img/default-avatar.png}" ng-hide="perfil.imageData" alt="Foto do explicador" class="profile-picture-big">
+      </div>
+    </div>
+    <div class="body70">
+      <h1>{{perfil.nome}}</h1>
+      <div ng-show="perfil['@type'] === 'explicador'">
+        <h2><strong>{{perfil.especialidade.nome}}</strong></h2>
+        <p>{{perfil.descricao}}</p>
+        <table style="width: 70%;margin-right: 100%">
+          <tr>
+            <th>Tipo</th>
+            <th>Preço</th>
+          </tr>
+          <tr>
+            <td>Preço por hora</td>
+            <td>
+              {{perfil.precohora}} €
+            </td>
+          </tr>
+          <tr ng-show="perfil.precomes !== 0">
+            <td>Preço por mês</td>
+            <td>
+              {{perfil.precomes}} €
+            </td>
+          </tr>
+          <tr ng-show="perfil.precoano !== 0">
+            <td>Preço por ano</td>
+            <td>
+              {{perfil.precoano}} €
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div ng-show="perfil['@type'] === 'explicando'">
+        <p>Idade: <strong>{{perfil.idade}}</strong></p>
+        <p>Distrito: <strong>{{perfil.distrito}}</strong></p>
+      </div>
+    </div>
+  </div>
+</body>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var perfil = /*[[${pessoa}]]*/ null;
+  /*]]>*/
+  var app = angular.module("perfilApp", []);
+
+  app.controller('perfilCtrl', function ($scope, $http) {
+    var authToken = localStorage.getItem('authToken');
+    /*if (authToken === null) {
+      window.location.href = '/login';
+    }*/
+    $scope.user = JSON.parse(localStorage.getItem('utilizador'));
+    $scope.user.tipodeconta === 1 ? $scope.tipo = 'Explicador' : $scope.tipo = 'Explicando';
+
+    $scope.perfil = perfil;
+    console.log($scope.perfil);
+  });
+</script>
+</html>
