@@ -2,7 +2,9 @@ package com.gooodstudy.goodstudyspring.controller;
 
 import com.gooodstudy.goodstudyspring.security.*;
 import com.gooodstudy.goodstudyspring.security.model.JwtRequest;
+import com.gooodstudy.goodstudyspring.security.model.JwtResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest, HttpServletRequest httpServletRequest) throws Exception {
-        return new ResponseEntity<>(authService.authenticate(authenticationRequest, httpServletRequest), HttpStatus.OK);
+        JwtResponse jwtResponse = authService.authenticate(authenticationRequest, httpServletRequest);
+        httpServletRequest.getSession().setAttribute("authToken", jwtResponse.getToken());
+        return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
     }
 
     @PostMapping("/logoutu")

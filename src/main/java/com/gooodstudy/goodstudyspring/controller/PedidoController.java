@@ -3,6 +3,7 @@ package com.gooodstudy.goodstudyspring.controller;
 import com.gooodstudy.goodstudyspring.model.Pedido;
 import com.gooodstudy.goodstudyspring.requests.AnswerToPedidoRequest;
 import com.gooodstudy.goodstudyspring.service.PedidoService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

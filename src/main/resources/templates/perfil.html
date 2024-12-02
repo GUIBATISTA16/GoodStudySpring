@@ -67,9 +67,6 @@
 
   app.controller('perfilCtrl', function ($scope, $http) {
     var authToken = localStorage.getItem('authToken');
-    /*if (authToken === null) {
-      window.location.href = '/login';
-    }*/
     $scope.user = JSON.parse(localStorage.getItem('utilizador'));
     $scope.user.tipodeconta === 1 ? $scope.tipo = 'Explicador' : $scope.tipo = 'Explicando';
 

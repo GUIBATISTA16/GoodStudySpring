@@ -96,9 +96,9 @@
                   ng-hide="isPedidoEnviado(explicador.id)">Enviar Pedido</button>
           <button class="buttonRedondo" style="width: 300px; color: #083a82" ng-click="$event.stopPropagation()"
                   ng-show="isPedidoEnviado(explicador.id)">Enviar Pedido</button>
-          <div class="modal-backdrop" ng-show="showModal"><!-- Popup-->
+          <div class="modal-backdrop" ng-show="showModal" ng-click="$event.stopPropagation()"><!-- Popup-->
             <div class="modal-content">
-              <span class="close-button" ng-click="closeModal(texto)">×</span>
+              <span class="close-button" ng-click="closeModal(texto); $event.stopPropagation()">×</span>
               <div class="headerDivisor">
                 <div class="left" >
                   <h3 style="text-align: left">Enviar Pedido a </h3>
@@ -113,7 +113,7 @@
                 <label for="texto">Pedido</label>
                 <textarea id="texto" ng-model="texto" placeholder="Texto (opcional)" rows="3" class="form-control"></textarea>
               </div>
-              <button ng-click="enviarPedido(texto)" class="buttonRedondo">Enviar Pedido</button>
+              <button ng-click="enviarPedido(texto); $event.stopPropagation()" class="buttonRedondo">Enviar Pedido</button>
               <p class="modal-note">Caso o Explicador aceite o pedido será criado um chat entre os dois automaticamente</p>
             </div>
           </div><!-- Popup-->
@@ -128,9 +128,7 @@
   var app = angular.module('homeApp',[]);
   app.controller('homeCtrl',function ($scope,$http,$interval) {
     var authToken = localStorage.getItem('authToken');
-    /*if (authToken === null) {
-      window.location.href = '/login';
-    }*/
+    $http.defaults.headers.common['Authorization'] = 'Bearer ' + authToken;
     $scope.user = JSON.parse(localStorage.getItem('utilizador'));
     $scope.user.tipodeconta === 1 ? $scope.tipo = 'Explicador' : $scope.tipo = 'Explicando';
 
@@ -149,7 +147,6 @@
     if ($scope.user.pessoa.imageData === null || !$scope.user.pessoa.imageData){
       $scope.profileImagePresent = false;
     }
-    $http.defaults.headers.common['Authorization'] = 'Bearer ' + authToken;
 
     $scope.logout = function () {
       $http.post('/logoutu')

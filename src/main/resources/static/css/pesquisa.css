@@ -85,6 +85,10 @@
     margin: 10px auto;
 }
 
+.modal-image:hover {
+    cursor: pointer;
+}
+
 .modal-note {
     font-size: 12px;
     color: #666;

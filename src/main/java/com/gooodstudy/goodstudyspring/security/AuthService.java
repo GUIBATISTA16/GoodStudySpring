@@ -36,7 +36,6 @@ public class AuthService {
                 .loadUserByUsername(authenticationRequest.getEmail());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
-        System.out.println(token);
 
         Dados utilizador = dadosRepository.findByEmail(authenticationRequest.getEmail());
         utilizador.setPassword(null);
@@ -60,6 +59,7 @@ public class AuthService {
         if (token != null) {
             jwtTokenUtil.invalidateToken(token);
         }
+        httpServletRequest.getSession().removeAttribute("authToken");
         httpServletRequest.getSession().invalidate();
     }
 }

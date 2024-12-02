@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,12 +32,22 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String email = null;
         String jwtToken = jwtTokenUtil.extractTokenFromRequest(request);
+        if (jwtToken == null) {
+            try {
+                jwtToken =  request.getSession().getAttribute("authToken").toString();
+            } catch (Exception ignored) {
+
+            }
+        }
         try {
             email = jwtTokenUtil.getEmailFromToken(jwtToken);
         } catch (IllegalArgumentException e) {
             System.out.println("Unable to get JWT Token");
         } catch (ExpiredJwtException e) {
             System.out.println("JWT Token has expired");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            request.getSession().invalidate();
         }
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null &&
