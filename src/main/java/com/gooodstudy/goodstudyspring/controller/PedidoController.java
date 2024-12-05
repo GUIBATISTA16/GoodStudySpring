@@ -1,12 +1,14 @@
 package com.gooodstudy.goodstudyspring.controller;
 
 import com.gooodstudy.goodstudyspring.model.Pedido;
-import com.gooodstudy.goodstudyspring.requests.AnswerToPedidoRequest;
+import com.gooodstudy.goodstudyspring.model.requests.AnswerToPedidoRequest;
 import com.gooodstudy.goodstudyspring.service.PedidoService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,9 @@ public class PedidoController {
     @Autowired
     PedidoService pedidoService;
 
+    @Autowired
+    SimpMessagingTemplate messagingTemplate;
+
     @PostMapping("sendPedido")
     public ResponseEntity<Pedido> sendPedido(@RequestBody Pedido pedido) {
         Pedido pedidoAdded = pedidoService.sendPedido(pedido);
@@ -28,6 +33,15 @@ public class PedidoController {
         else {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @MessageMapping("/sendPedido")
+    public void sendPedidoWS(@Payload Pedido pedido) {
+        Pedido pedidoAdded = pedidoService.sendPedido(pedido);
+        messagingTemplate.convertAndSendToUser(
+                String.valueOf(pedidoAdded.getExplicador().getId()),
+                "/pedidos",
+                pedidoAdded);
     }
 
     @GetMapping("getPedidos/explicador/{id}")

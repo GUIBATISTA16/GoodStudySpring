@@ -1,7 +1,7 @@
 package com.gooodstudy.goodstudyspring.controller;
 
 import com.gooodstudy.goodstudyspring.model.Explicador;
-import com.gooodstudy.goodstudyspring.requests.PesquisaRequest;
+import com.gooodstudy.goodstudyspring.model.requests.PesquisaRequest;
 import com.gooodstudy.goodstudyspring.service.ExplicadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

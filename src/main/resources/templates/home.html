@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <link rel="stylesheet" href="../static/css/padrao.css">
   <link th:rel="stylesheet" th:href="@{/css/padrao.css}">
@@ -212,9 +214,10 @@
       texto = "";
       $scope.selectedExplicador = {};
     };
+    var socket = null;
+    var stompClient = null;
 
     $scope.enviarPedido = function(texto) {
-      console.log("Texto do Pedido: ", texto);
       $scope.texto = texto;
 
       let pedido = {
@@ -223,7 +226,22 @@
         "texto": $scope.texto
       };
 
-      $http.post('/api/sendPedido', pedido)
+      socket = new SockJS('/ws');
+      stompClient = Stomp.over(socket);
+
+      stompClient.connect({},
+              function onConnected (){
+                stompClient.send("/app/sendPedido",{},JSON.stringify(pedido));
+                $scope.$apply(function () {
+                  $scope.pedidosEnviados.push(pedido);
+                  $scope.texto="";
+                  $scope.closeModal(texto);
+                });
+              },function onError (){
+                console.log("Erro ao conectar ao servidor");
+              });
+
+      /*$http.post('/api/sendPedido', pedido)
               .then(function (response) {
                 //console.log(response.data);
                 $scope.pedidosEnviados.push(pedido);
@@ -233,7 +251,7 @@
               })
               .catch(function (error) {
                 console.log(error);
-              });
+              });*/
     };
 
     $scope.pedidosEnviados = [];
@@ -254,7 +272,7 @@
       });
     };
 
-    $scope.pedidosRecebidos = [];
+
     $scope.getPedidosRecebidos = function () {
       $http.get('/api/getPedidos/explicador/' + $scope.user.id)
               .then(function (response){
@@ -264,9 +282,26 @@
                 console.log(error);
               });
     };
+
+    $scope.pedidosRecebidos = [];
     if($scope.tipo === 'Explicador'){
       $scope.getPedidosRecebidos();
-      $interval($scope.getPedidosRecebidos,10000);
+
+      socket = new SockJS('/ws');
+      stompClient = Stomp.over(socket);
+
+      stompClient.connect({},
+              function onConnected (){
+                stompClient.subscribe(`/explicador/${$scope.user.id}/pedidos`,async function (payload) {
+                  var pedidoReceived = JSON.parse(payload.body);
+                  console.log("Pedido recebido: ", pedidoReceived);
+                  $scope.$apply(function () {
+                    $scope.pedidosRecebidos.push(pedidoReceived);
+                  });
+                });
+              },function onError (){
+                console.log("Erro ao conectar ao servidor");
+              });
     }
 
     $scope.responderPedido = function (pedido,resposta) {

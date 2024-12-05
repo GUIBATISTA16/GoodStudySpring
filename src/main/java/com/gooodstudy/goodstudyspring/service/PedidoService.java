@@ -2,7 +2,7 @@ package com.gooodstudy.goodstudyspring.service;
 
 import com.gooodstudy.goodstudyspring.model.Pedido;
 import com.gooodstudy.goodstudyspring.repository.PedidoRepository;
-import com.gooodstudy.goodstudyspring.requests.AnswerToPedidoRequest;
+import com.gooodstudy.goodstudyspring.model.requests.AnswerToPedidoRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

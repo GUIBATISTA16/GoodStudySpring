@@ -1,4 +1,4 @@
-package com.gooodstudy.goodstudyspring.requests;
+package com.gooodstudy.goodstudyspring.model.requests;
 
 import com.gooodstudy.goodstudyspring.model.Pedido;
 import lombok.Getter;
