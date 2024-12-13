@@ -18,23 +18,21 @@
     </div>
     <div class="body" ng-app="loginApp" ng-controller="loginCtrl">
         <div class="containerRedondo" >
-            <div class="content">
-                <div>
-                    <input type="email" ng-model="email" placeholder="Email">
-                </div>
-                <div class="password-container">
-                    <input id="passwordText" ng-model="password" type="password" placeholder="Password">
-                    <span class="password-toggle-icon" onclick="changePasswordVisibility()"><i id="eyeIcon" class="fas fa-eye"></i></span>
-                </div>
-                <div>
-                    <button ng-click="login()" class="buttonRedondo">Login</button>
-                </div>
-                <div>
-                    <button class="buttonRedondo">Login Anônimo</button>
-                </div>
-                <div>
-                    <button ng-click="criarConta()" class="buttonRedondo">Criar Conta</button>
-                </div>
+            <div>
+                <input type="email" ng-model="email" placeholder="Email">
+            </div>
+            <div class="password-container">
+                <input id="passwordText" ng-model="password" type="password" placeholder="Password">
+                <span class="password-toggle-icon" onclick="changePasswordVisibility()"><i id="eyeIcon" class="fas fa-eye"></i></span>
+            </div>
+            <div>
+                <button ng-click="login()" class="buttonRedondo">Login</button>
+            </div>
+            <div>
+                <button class="buttonRedondo">Login Anônimo</button>
+            </div>
+            <div>
+                <button ng-click="criarConta()" class="buttonRedondo">Criar Conta</button>
             </div>
         </div>
     </div>
@@ -60,8 +58,8 @@
     app.controller('loginCtrl', function ($scope, $http) {
         localStorage.removeItem('authToken');
         localStorage.removeItem('utilizador');
-        $scope.email= "duarte@email.com";//testes retirar
-        $scope.password= "d123";//testes retirar
+        $scope.email= "guimcbatista@gmail.com";//testes retirar
+        $scope.password= "gui123";//testes retirar
         $scope.login = function (){
             if(!$scope.email || !$scope.password){
                 alert("Por favor, preencha todos os campos");

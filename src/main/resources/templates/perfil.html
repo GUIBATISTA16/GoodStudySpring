@@ -12,10 +12,13 @@
   <title>Perfil</title>
 </head>
 <body ng-app="perfilApp" ng-controller="perfilCtrl">
-  <div class="header">
-    <h1 class="textPrincipal" >{{perfil.nome}}</h1>
+  <div id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center;">
+    <div class="loader"></div>
   </div>
-  <div style="display: flex; flex-direction: row">
+  <div class="header">
+    <h1 class="textPrincipal" ng-cloak>{{perfil.nome}}</h1>
+  </div>
+  <div style="display: flex; flex-direction: row" ng-cloak>
     <div class="body30">
       <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
         <img ng-src="data:{{perfil.imageType}};base64,{{perfil.imageData}}" ng-show="perfil.imageData" alt="Foto de perfil" class="profile-picture-big"/>
@@ -64,7 +67,9 @@
   var perfil = /*[[${pessoa}]]*/ null;
   /*]]>*/
   var app = angular.module("perfilApp", []);
-
+  app.run(function () {
+    document.getElementById("loading-screen").style.display = "none";
+  });
   app.controller('perfilCtrl', function ($scope, $http) {
     var authToken = localStorage.getItem('authToken');
     $scope.user = JSON.parse(localStorage.getItem('utilizador'));
